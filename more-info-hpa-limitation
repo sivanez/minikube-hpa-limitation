@@ -1,0 +1,49 @@
+How HPA Works:
+
+1. Metrics Collection:
+   ✅ Queries Metrics Server for resource metrics or adapters (e.g., Prometheus Adapter) for custom metrics.
+
+2. Scaling Logic:
+   ✅ Calculates replicas using:
+   ✍ desiredReplicas = ceil(currentReplicas * currentMetricValue / targetMetricValue)
+
+3.Scaling Decision:
+  ✅ No scaling within a small tolerance (~10% of the target metric) to avoid "flapping."
+  ✅ Gradual adjustments prevent abrupt scaling.
+
+Why Do Complex Scenarios Cause HPA Limitations?
+
+1.Misconfigurations:
+  ✅ Incorrect thresholds or metrics lead to under/over-scaling.
+
+2.Metric Delays:
+  ✅ Metrics may lag, causing slower scaling.
+
+3.Dynamic Workloads:
+  ✅ Sudden spikes or dips overwhelm default sync intervals (~30s).
+
+4.Unavailable Metrics:
+  ✅ Missing/stale custom metrics hinder scaling decisions.
+
+5.API Rate Limiting:
+  ✅ Frequent updates can overload the Kubernetes API.
+
+Symptoms of HPA Limitations:
+
+1.Scaling Delays:
+  ✅ Slow response to spikes due to sync interval/metric delays.
+
+2.Incorrect Scaling:
+  ✅ Over-scaling wastes resources; under-scaling affects performance.
+
+3. HPA Errors in Logs:
+   ✅ Errors like: "unable to fetch metrics: no metrics returned"
+
+4.Custom Metric Issues:
+  ✅ HPA fails without accessible metrics.
+
+5.API Overload:
+  ✅ Frequent scaling requests cause throttling or timeouts.
+
+
+Please read https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/ for more details on HPA.
